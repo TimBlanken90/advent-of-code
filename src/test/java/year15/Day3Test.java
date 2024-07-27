@@ -1,14 +1,15 @@
 package year15;
 
-import org.junit.jupiter.api.Test;
-import util.InputResolver;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import util.InputResolver;
 
 class Day3Test {
 

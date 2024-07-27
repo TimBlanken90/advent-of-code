@@ -3,7 +3,6 @@ package year15;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.IntBinaryOperator;
-import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
