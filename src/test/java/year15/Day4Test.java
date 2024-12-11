@@ -1,12 +1,12 @@
 package year15;
 
 import common.Day;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import util.InputResolver;
 
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,9 +32,13 @@ class Day4Test implements Day {
         assertEquals(9962624, result);
     }
 
-    @SneakyThrows
     private String hash(String input) {
-        var md = MessageDigest.getInstance("MD5");
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         var digest = md.digest(input.getBytes());
         var hexString = new StringBuilder();
         for (byte b : digest) {
@@ -48,7 +52,7 @@ class Day4Test implements Day {
     }
 
     private int findLeadingZeroOccurences(String input, int numberOfLeadingZeros) {
-        var zerosString = IntStream.range(0, numberOfLeadingZeros).mapToObj(i -> "0").collect(Collectors.joining(""));
+        var zerosString = IntStream.range(0, numberOfLeadingZeros).mapToObj(_ -> "0").collect(Collectors.joining(""));
         int i = 0;
         for (; i < Integer.MAX_VALUE; i++) {
             var hash = hash(input + i);
