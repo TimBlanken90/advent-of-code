@@ -43,6 +43,7 @@ public class Day1Test implements Day {
     @Test
     public void partTwo() throws IOException {
         var words = List.of("one", "two", "three", "four", "five", "six", "seven", "eight", "nine");
+
         var pattern = Pattern.compile("one|two|three|four|five|six|seven|eight|nine|\\d");
         var input = InputResolver.toList(23, 1);
         int sum = 0;

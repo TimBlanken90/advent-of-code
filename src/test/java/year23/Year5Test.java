@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Gatherers;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,14 +28,18 @@ class Year5Test implements Day {
         var input = InputResolver.toString(23, 5);
         var config = createFertilizerConfig(input);
 
-        long solution = Collections.min(calculateLocations(config));
+        long solution = Collections.min(calculateLocationsPt1(config));
         assertEquals(177942185L, solution);
     }
 
     @Override
     @Test
     public void partTwo() throws IOException {
+        var input = InputResolver.toString(23, 5);
+        var config = createFertilizerConfig(input);
 
+        long solution = Collections.min(calculateLocationsPt2(config));
+        assertEquals(177942185L, solution);
     }
 
     private FertilizerConfig createFertilizerConfig(String input) {
@@ -68,7 +74,7 @@ class Year5Test implements Day {
         return new FertilizerConfig(seeds, map);
     }
 
-    private List<Long> calculateLocations(FertilizerConfig config) {
+    private List<Long> calculateLocationsPt1(FertilizerConfig config) {
         var locations = new ArrayList<Long>(config.seeds.size());
 
         // process each seed to calculate its final location
@@ -82,6 +88,27 @@ class Year5Test implements Day {
         }
 
        return locations;
+    }
+
+    private List<Long> calculateLocationsPt2(FertilizerConfig config) {
+        var seeds = config.seeds.stream()
+            .gather(Gatherers.windowFixed(2))
+            .flatMap(list -> LongStream.range(list.getFirst(), list.getFirst() + list.getLast()).boxed())
+            .toList();
+
+        var locations = new ArrayList<Long>();
+
+        // process each seed to calculate its final location
+        for (long seed: seeds) {
+            long target = seed;
+            for (var entry: config.maps.entrySet()) {
+                // after each iteration pass the (tmp) target as input
+                target = findLocation(target, entry.getValue());
+            }
+            locations.add(target);
+        }
+
+        return locations;
     }
 
     // recursively find the final location based on the given maps
